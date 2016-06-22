@@ -1,5 +1,6 @@
 package com.example.android.popularmovies;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,8 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,10 +34,9 @@ import java.util.ArrayList;
 
 
 public class MoviesFragment extends Fragment {
-
-    private ArrayAdapter<String> mMoviesAdapter;
-
+    private MoviesAdapter moviesAdapter;
     public MoviesFragment() {
+
 
     }
 
@@ -61,7 +64,7 @@ public class MoviesFragment extends Fragment {
 
     public void updateMovies() {
         FetchMovieTasks movieTasks = new FetchMovieTasks();
-        String sortBy="top_rated";
+        String sortBy = "top_rated";
         movieTasks.execute(sortBy);
     }
 
@@ -74,28 +77,61 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        int resultLength = movieList.size();
+//        String [] imagesURL = new String[resultLength];
+//        String [] movieTitle = new String[resultLength];
+//        for (int i=0;i<resultLength;i++){
+//            imagesURL[i]=movieList.get(i).getPosterURL();
+//            movieTitle[i]=movieList.get(i).getTitle();
+//        }
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mMoviesAdapter = new ArrayAdapter<String>(
-                getActivity(), //The current context
-                R.layout.list_item_movies, //Name of layout id
-                R.id.list_item_movies_textview, // The id of the text view to populate
-                new ArrayList<String>());
+//        mForecastAdapter =
+//                new ArrayAdapter<String>(
+//                        getActivity(), // The current context (this activity)
+//                        R.layout.list_item_movies, // The name of the layout ID.
+//                        R.id.list_item_movies_textview, // The ID of the textview to populate.
+//                        new ArrayList<String>());
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_movies);
-        listView.setAdapter(mMoviesAdapter);
+        moviesAdapter = new MoviesAdapter(getContext(), new ArrayList<Movie>());
+        GridView listView = (GridView) rootView.findViewById(R.id.listview_movies);
+        listView.setAdapter(moviesAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String forecast = mMoviesAdapter.getItem(position);
-                Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
+                String releaseDate = moviesAdapter.getItem(position).getReleaseDate();
+                Toast.makeText(getActivity(), releaseDate, Toast.LENGTH_SHORT).show();
             }
         });
+
         return rootView;
     }
 
-    public class FetchMovieTasks extends AsyncTask<String, Void, String[][]> {
+
+    public class MoviesAdapter extends ArrayAdapter<Movie> {
+
+        public MoviesAdapter(Context context, ArrayList<Movie> items) {
+            super(context, 0, items);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Movie movie = getItem(position);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_movies, parent, false);
+            }
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.movieThumbnail);
+            Picasso.with(getContext())
+                    .load(movie.getPosterURL())
+                    .fit()
+                    .into(imageView);
+            return convertView;
+        }
+    }
+
+
+    public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         private final String LOG_TAG = FetchMovieTasks.class.getSimpleName();
 
@@ -109,7 +145,7 @@ public class MoviesFragment extends Fragment {
 //            return shortenedDateFormat.format(time);
 //        }
 
-        private String[][] getMoviesDataFromJson(String moviesJsonStr, int numResults)
+        private ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr, int numResults)
                 throws JSONException {
             final String OWM_RESULTS = "results";
             final String OWM_POSTER_PATH = "poster_path";
@@ -121,7 +157,7 @@ public class MoviesFragment extends Fragment {
             JSONObject forecastJson = new JSONObject(moviesJsonStr);
             JSONArray moviesArray = forecastJson.getJSONArray(OWM_RESULTS);
 
-            String[][] resultStrs = new String[numResults][5];
+            ArrayList<Movie> resultStrs = new ArrayList<>();
 
             for (int i = 0; i < numResults; i++) {
                 String title;
@@ -133,8 +169,8 @@ public class MoviesFragment extends Fragment {
                 JSONObject movie = moviesArray.getJSONObject(i);
                 title = movie.getString(OWM_TITLE);
                 ratings = movie.getString(OWM_RATINGS);
-                plot=movie.getString(OWM_PLOT);
-                releaseDate=movie.getString(OWM_RELEASE_DATE);
+                plot = movie.getString(OWM_PLOT);
+                releaseDate = movie.getString(OWM_RELEASE_DATE);
 
                 Uri.Builder builtUri = new Uri.Builder();
                 builtUri.scheme("http")
@@ -146,18 +182,15 @@ public class MoviesFragment extends Fragment {
                         .build();
 
                 posterURL = builtUri.toString();
-                resultStrs[i][0] = title;
-                resultStrs[i][1] = posterURL;
-                resultStrs[i][2] = plot;
-                resultStrs[i][3] = ratings;
-                resultStrs[i][4] = releaseDate;
+                Movie newMovie = new Movie(title, ratings, posterURL, plot, releaseDate);
+                resultStrs.add(newMovie);
             }
             return resultStrs;
         }
 
         @Override
 
-        protected String[][] doInBackground(String... params) {
+        protected ArrayList<Movie> doInBackground(String... params) {
             if (params.length == 0) {
                 return null;
             }
@@ -214,7 +247,9 @@ public class MoviesFragment extends Fragment {
                 }
                 movieJsonStr = buffer.toString();
                 Log.i("MoviesFragment.java ", "Downloaded Data " + movieJsonStr);
-                if (movieJsonStr.length()<numResults){numResults=movieJsonStr.length();}
+                if (movieJsonStr.length() < numResults) {
+                    numResults = movieJsonStr.length();
+                }
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
@@ -242,12 +277,16 @@ public class MoviesFragment extends Fragment {
             return null;
         }
 
-        protected void onPostExecute(String[][] result) {
+        protected void onPostExecute(ArrayList<Movie> result) {
             if (result != null) {
-                mMoviesAdapter.clear();
-                for (String moviesStr[] : result) {
-                    mMoviesAdapter.add(moviesStr[1]);
+//                mForecastAdapter.clear();
+                moviesAdapter.clear();
+                for (Movie moviesStr : result) {
+//                    movieList.add(moviesStr);
+//                    mForecastAdapter.add(moviesStr.getPosterURL());
+                    moviesAdapter.add(moviesStr);
                 }
+
             }
         }
     }

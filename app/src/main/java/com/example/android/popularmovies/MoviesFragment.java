@@ -1,9 +1,12 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +66,8 @@ public class MoviesFragment extends Fragment {
 
     public void updateMovies() {
         FetchMovieTasks movieTasks = new FetchMovieTasks();
-        String sortBy = "top_rated";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortBy = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
         movieTasks.execute(sortBy);
     }
 
@@ -100,8 +103,11 @@ public class MoviesFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String releaseDate = moviesAdapter.getItem(position).getReleaseDate();
-                Toast.makeText(getActivity(), releaseDate, Toast.LENGTH_SHORT).show();
+                Movie movieDetail = moviesAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                Movie mParcel = movieDetail;
+                intent.putExtra("myMovie", mParcel);
+                startActivity(intent);
             }
         });
 
@@ -124,6 +130,7 @@ public class MoviesFragment extends Fragment {
             ImageView imageView = (ImageView) convertView.findViewById(R.id.movieThumbnail);
             Picasso.with(getContext())
                     .load(movie.getPosterURL())
+                    .placeholder(R.drawable.placeholder_poster)
                     .fit()
                     .into(imageView);
             return convertView;

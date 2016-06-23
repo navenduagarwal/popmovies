@@ -72,4 +72,12 @@ public class Movie implements Parcelable {
     public String getTitle() {
         return title;
     }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public String getRatings() {
+        return ratings;
+    }
 }

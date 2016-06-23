@@ -152,7 +152,7 @@ public class MoviesFragment extends Fragment {
 //            return shortenedDateFormat.format(time);
 //        }
 
-        private ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr, int numResults)
+        private ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
                 throws JSONException {
             final String OWM_RESULTS = "results";
             final String OWM_POSTER_PATH = "poster_path";
@@ -166,7 +166,7 @@ public class MoviesFragment extends Fragment {
 
             ArrayList<Movie> resultStrs = new ArrayList<>();
 
-            for (int i = 0; i < numResults; i++) {
+            for (int i = 0; i < moviesArray.length(); i++) {
                 String title;
                 String ratings;
                 String posterURL;
@@ -209,7 +209,7 @@ public class MoviesFragment extends Fragment {
 
             // Will contain the raw JSON response as a string.
             String movieJsonStr = null;
-            int numResults = 7;
+//            int numResults = 7;
 
             try {
 //                final String FORECAST_BASE_URL = "https://api.themoviedb.org/3/movie/now_playing?";
@@ -254,10 +254,11 @@ public class MoviesFragment extends Fragment {
                 }
                 movieJsonStr = buffer.toString();
                 Log.i("MoviesFragment.java ", "Downloaded Data " + movieJsonStr);
-                if (movieJsonStr.length() < numResults) {
-                    numResults = movieJsonStr.length();
-                }
+//                if (movieJsonStr.length() < numResults) {
+//                    numResults = movieJsonStr.length();
+//                }
             } catch (IOException e) {
+                e.printStackTrace();
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
                 // to parse it.
@@ -276,7 +277,7 @@ public class MoviesFragment extends Fragment {
 
             }
             try {
-                return getMoviesDataFromJson(movieJsonStr, numResults);
+                return getMoviesDataFromJson(movieJsonStr);
             } catch (JSONException e) {
                 Log.e(LOG_TAG, e.getMessage(), e);
                 e.printStackTrace();

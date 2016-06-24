@@ -18,3 +18,5 @@ App will
 	- A plot synopsis (called overview in the api)
 	- user rating (called vote_average in the api)
 	- release date
+
+Update your API KEY by generating a new one here at TheMoviesDB [Website](https://www.themoviedb.org/account/signup "Website") and updating it in build.gradel(Module:app)

@@ -1,64 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".DetailFragment">
-
-    <TextView
-        android:id="@+id/detail_title_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:gravity="center_vertical"
-        android:paddingBottom="24dp"
-        android:paddingLeft="24dp"
-        android:paddingTop="24dp"
-        android:text="Placeholder"
-        android:textColor="#ffffff"
-        android:textSize="48sp">
-    </TextView>
-
+        android:orientation="vertical"
+        tools:context=".detail.DetailFragment">
+        <TextView
+            android:id="@+id/detail_title_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:gravity="center_vertical"
+            android:paddingBottom="24dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="24dp"
+            android:textColor="#ffffff"
+            android:textSize="48sp"
+            tools:text="Placeholder" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:orientation="horizontal"
-            android:paddingLeft="24dp"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
             android:paddingTop="8dp">
-
             <ImageView
                 android:id="@+id/detail_poster_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginRight="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@drawable/placeholder_poster" />
-
+                android:src="@drawable/placeholder_poster"
+                android:contentDescription="@string/detail_poster_content_description"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/detail_year_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2015"
-                    android:textSize="24sp" />
+                    android:layout_marginBottom="4dp"
+                    android:textSize="24sp"
+                    tools:text="2015" />
 
-                <TextView
-                    android:id="@+id/detail_ratings_textview"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginBottom="8dp">
+                    <ProgressBar
+                        android:id="@+id/ratings_progress"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_centerInParent="true"
+                        android:indeterminate="false"
+                        android:indeterminateOnly="false"
+                        android:max="100"
+                        android:progress="100"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/detail_ratings_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        tools:text="8.1"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="8.1/10"
-                    android:textSize="16sp"></TextView>
+                    android:src="@drawable/ic_star_border_golden_24dp"
+                    android:background="@android:color/transparent"/>
+
             </LinearLayout>
         </LinearLayout>
 
@@ -67,16 +96,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:paddingLeft="24dp"
-            android:paddingTop="16dp" />
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            tools:text="Every child comes into the world full of promise,and none more so than Chappie:he is gifted, special, a prodigy. Chappie he is a robot"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"/>
+        <TextView
+            android:id="@+id/detail_trailer_heading_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:textSize="16sp"
+            android:text="@string/heading_trailers"/>
 
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/recycler_view_trailers"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:visibility="gone">-->
+
+            <!--</android.support.v7.widget.RecyclerView>-->
+
+            <TextView
+                android:id="@+id/text_empty_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:text="@string/list_empty_trailers"
+                android:visibility="visible" />
+        </FrameLayout>
     </LinearLayout>
 </ScrollView>

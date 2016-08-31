@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,10 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.detail.DetailActivity;
+import com.example.android.popularmovies.main.Movie;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

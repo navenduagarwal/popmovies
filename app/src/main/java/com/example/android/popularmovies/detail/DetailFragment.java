@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.main.Movie;
+import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
 /**

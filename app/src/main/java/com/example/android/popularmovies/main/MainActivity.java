@@ -1,10 +1,13 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.main;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 

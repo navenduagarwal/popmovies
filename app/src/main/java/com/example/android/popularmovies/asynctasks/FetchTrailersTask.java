@@ -1,11 +1,15 @@
 package com.example.android.popularmovies.asynctasks;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.detail.TrailerAdapter;
+import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.model.Trailer;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -27,9 +31,15 @@ import java.util.ArrayList;
 public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer>> {
     private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
     private TrailerAdapter trailerAdapter;
+    private Context mContext;
+    private RecyclerView recyclerView;
+    private Movie movie;
 
-    public FetchTrailersTask(TrailerAdapter trailerAdapter) {
+    public FetchTrailersTask(Context context, TrailerAdapter trailerAdapter, RecyclerView recyclerView, Movie movie) {
+        this.mContext = context;
         this.trailerAdapter = trailerAdapter;
+        this.recyclerView = recyclerView;
+        this.movie = movie;
     }
 
     private ArrayList<Trailer> getTrailersDataFromJson(String trailerJsonStr) throws JSONException {
@@ -147,11 +157,9 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
 
     protected void onPostExecute(ArrayList<Trailer> result) {
         if (result != null) {
-                trailerAdapter.clear();
-            for (Trailer moviesStr : result) {
-                trailerAdapter.add(moviesStr);
-            }
-
+            trailerAdapter = new TrailerAdapter(mContext,movie,result,R.layout.list_item_trailer, R.layout.list_item_detail_header);
+            recyclerView.setAdapter(trailerAdapter);
+            trailerAdapter.notifyDataSetChanged();
         }
     }
 }

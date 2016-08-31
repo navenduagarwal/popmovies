@@ -1,136 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".detail.DetailFragment">
-        <TextView
-            android:id="@+id/detail_title_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:gravity="center_vertical"
-            android:paddingBottom="24dp"
-            android:paddingEnd="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingStart="16dp"
-            android:paddingTop="24dp"
-            android:textColor="#ffffff"
-            android:textSize="48sp"
-            tools:text="Placeholder" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal"
-            android:paddingEnd="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp">
-            <ImageView
-                android:id="@+id/detail_poster_imageview"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_view_trailers"
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/placeholder_poster"
-                android:contentDescription="@string/detail_poster_content_description"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/detail_year_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="24sp"
-                    tools:text="2015" />
-                <TextView
-                    android:id="@+id/detail_ratings_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    tools:text="8.1/10" />
-                <TextView
-                    android:id="@+id/detail_reviews_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorAccent"
-                    tools:text="6 critic reviews" />
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_border_golden_24dp"
-                    android:background="@android:color/transparent"/>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/detail_plot_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingStart="16dp"
-            android:paddingRight="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="16dp"
-            tools:text="Every child comes into the world full of promise,and none more so than Chappie:he is gifted, special, a prodigy. Chappie he is a robot"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:background="@android:color/darker_gray"/>
-        <TextView
-            android:id="@+id/detail_trailer_heading_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingStart="16dp"
-            android:paddingRight="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:textSize="16sp"
-            android:text="@string/heading_trailers"/>
-
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ListView
-                android:id="@+id/list_view_trailers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible">
-            </ListView>
-
-            <TextView
-                android:id="@+id/text_empty_trailers"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:text="@string/list_empty_trailers"
-                android:visibility="gone" />
-        </FrameLayout>
-    </LinearLayout>
-</ScrollView>
+</RelativeLayout>

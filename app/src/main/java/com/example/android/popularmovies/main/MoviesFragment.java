@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import com.example.android.popularmovies.BuildConfig;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.detail.DetailActivity;
-import com.example.android.popularmovies.main.Movie;
+import com.example.android.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

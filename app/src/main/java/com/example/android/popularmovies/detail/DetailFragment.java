@@ -9,16 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.popularmovies.main.Movie;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by Navendu Agarwal on 22-Jun-16.
+ * Detail Fragment
  */
 public class DetailFragment extends Fragment {
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private String movieTitle;
+    private ImageView posterThumbnail;
+    private TextView titleView, yearView, ratingsView, plotView;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -33,27 +35,31 @@ public class DetailFragment extends Fragment {
         Bundle b = intent.getExtras();
         Movie movieDetail = (Movie) b.getParcelable("myMovie");
 
+        initializeScreen(rootView);
+
         /**Update Thumbnail image in detail view*/
-        ImageView posterThumbnail = (ImageView) rootView.findViewById(R.id.detail_poster_imageview);
         Picasso.with(getContext())
                 .load(movieDetail.getPosterURL())
                 .into(posterThumbnail);
         /**Update Title Text in detail view*/
-        TextView titleView = (TextView) rootView.findViewById(R.id.detail_title_textView);
         titleView.setText(movieDetail.getTitle());
         /**Update year Text in detail view*/
-        TextView yearView = (TextView) rootView.findViewById(R.id.detail_year_textview);
         String year = movieDetail.getReleaseDate().substring(0, 4);
         yearView.setText(year);
         /**Update ratings Text in detail view*/
         String ratings = movieDetail.getRatings() + "/10";
-        TextView ratingsView = (TextView) rootView.findViewById(R.id.detail_ratings_textview);
         ratingsView.setText(ratings);
         /**Update plot Text in detail view*/
-        TextView plotView = (TextView) rootView.findViewById(R.id.detail_plot_textView);
         plotView.setText(movieDetail.getPlot());
-
         return rootView;
+    }
+
+    public void initializeScreen(View rootView) {
+        posterThumbnail = (ImageView) rootView.findViewById(R.id.detail_poster_imageview);
+        titleView = (TextView) rootView.findViewById(R.id.detail_title_textView);
+        yearView = (TextView) rootView.findViewById(R.id.detail_year_textview);
+        ratingsView = (TextView) rootView.findViewById(R.id.detail_ratings_textview);
+        plotView = (TextView) rootView.findViewById(R.id.detail_plot_textView);
     }
 
 

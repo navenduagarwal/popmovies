@@ -117,13 +117,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:id="@+id/recycler_view_trailers"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:visibility="gone">-->
-
-            <!--</android.support.v7.widget.RecyclerView>-->
+            <ListView
+                android:id="@+id/list_view_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+            </ListView>
 
             <TextView
                 android:id="@+id/text_empty_trailers"
@@ -131,7 +130,7 @@
                 android:layout_height="100dp"
                 android:gravity="center"
                 android:text="@string/list_empty_trailers"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
 </ScrollView>

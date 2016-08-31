@@ -27,10 +27,7 @@ import java.util.ArrayList;
 
 public class MoviesFragment extends Fragment {
     private MoviesAdapter moviesAdapter;
-
     public MoviesFragment() {
-
-
     }
 
     @Override

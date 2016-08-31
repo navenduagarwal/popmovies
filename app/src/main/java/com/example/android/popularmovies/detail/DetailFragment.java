@@ -7,11 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.asynctasks.FetchTrailersTask;
 import com.example.android.popularmovies.model.Movie;
+import com.example.android.popularmovies.model.Trailer;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 /**
  * Detail Fragment
@@ -21,6 +26,8 @@ public class DetailFragment extends Fragment {
     private String movieTitle;
     private ImageView posterThumbnail;
     private TextView titleView, yearView, ratingsView, plotView;
+    private TrailerAdapter mTrailerAdapter;
+    private Movie movieDetail;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -33,10 +40,13 @@ public class DetailFragment extends Fragment {
 
         Intent intent = getActivity().getIntent();
         Bundle b = intent.getExtras();
-        Movie movieDetail = (Movie) b.getParcelable("myMovie");
+        movieDetail = (Movie) b.getParcelable("myMovie");
 
         initializeScreen(rootView);
 
+        mTrailerAdapter = new TrailerAdapter(getContext(),new ArrayList<Trailer>());
+            ListView listView = (ListView) rootView.findViewById(R.id.list_view_trailers);
+            listView.setAdapter(mTrailerAdapter);
         /**Update Thumbnail image in detail view*/
         Picasso.with(getContext())
                 .load(movieDetail.getPosterURL())
@@ -62,5 +72,14 @@ public class DetailFragment extends Fragment {
         plotView = (TextView) rootView.findViewById(R.id.detail_plot_textView);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateTrailers();
+    }
 
+    public void updateTrailers(){
+        FetchTrailersTask trailersTask = new FetchTrailersTask(mTrailerAdapter);
+        trailersTask.execute(movieDetail.getId());
+    }
 }

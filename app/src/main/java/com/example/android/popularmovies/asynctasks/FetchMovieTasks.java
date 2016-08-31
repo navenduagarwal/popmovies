@@ -21,42 +21,35 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Task to fetch movies
+ * Async Task to fetch movies from themoviedb.org
  */
 public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     private final String LOG_TAG = FetchMovieTasks.class.getSimpleName();
     private MoviesAdapter moviesAdapter;
 
-    public FetchMovieTasks(MoviesAdapter moviesAdapter){
+    public FetchMovieTasks(MoviesAdapter moviesAdapter) {
         this.moviesAdapter = moviesAdapter;
     }
 
-//        private String getReadableDateString(Date time) {
-//            // Because the API returns a unix timestamp (measured in seconds),
-//            // it must be converted to milliseconds in order to be converted to valid date.
-//            //also setting timezone to be UTC
-//            TimeZone timeZone = TimeZone.getTimeZone("UTC");
-//            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
-//            shortenedDateFormat.setTimeZone(timeZone);
-//            return shortenedDateFormat.format(time);
-//        }
 
     private ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
             throws JSONException {
         final String OWM_RESULTS = "results";
+        final String OWM_ID = "id";
         final String OWM_POSTER_PATH = "poster_path";
         final String OWM_TITLE = "original_title";
         final String OWM_PLOT = "overview";
         final String OWM_RATINGS = "vote_average";
         final String OWM_RELEASE_DATE = "release_date";
 
-        JSONObject forecastJson = new JSONObject(moviesJsonStr);
-        JSONArray moviesArray = forecastJson.getJSONArray(OWM_RESULTS);
+        JSONObject moviesJson = new JSONObject(moviesJsonStr);
+        JSONArray moviesArray = moviesJson.getJSONArray(OWM_RESULTS);
 
         ArrayList<Movie> resultStrs = new ArrayList<>();
 
         for (int i = 0; i < moviesArray.length(); i++) {
+            String id;
             String title;
             String ratings;
             String posterURL;
@@ -64,6 +57,7 @@ public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
             String releaseDate;
             //Get JSON Object representing the movie
             JSONObject movie = moviesArray.getJSONObject(i);
+            id = movie.getString(OWM_ID);
             title = movie.getString(OWM_TITLE);
             ratings = movie.getString(OWM_RATINGS);
             plot = movie.getString(OWM_PLOT);
@@ -79,7 +73,7 @@ public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
                     .build();
 
             posterURL = builtUri.toString();
-            Movie newMovie = new Movie(title, ratings, posterURL, plot, releaseDate);
+            Movie newMovie = new Movie(id, title, ratings, posterURL, plot, releaseDate);
             resultStrs.add(newMovie);
         }
         return resultStrs;
@@ -143,7 +137,7 @@ public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
                 return null;
             }
             movieJsonStr = buffer.toString();
-            Log.i("MoviesFragment.java ", "Downloaded Data " + movieJsonStr);
+//            Log.i("MoviesFragment.java ", "Downloaded Data " + movieJsonStr);
 //                if (movieJsonStr.length() < numResults) {
 //                    numResults = movieJsonStr.length();
 //                }
@@ -177,11 +171,8 @@ public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     protected void onPostExecute(ArrayList<Movie> result) {
         if (result != null) {
-//                mForecastAdapter.clear();
             moviesAdapter.clear();
             for (Movie moviesStr : result) {
-//                    movieList.add(moviesStr);
-//                    mForecastAdapter.add(moviesStr.getPosterURL());
                 moviesAdapter.add(moviesStr);
             }
 

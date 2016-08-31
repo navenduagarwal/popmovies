@@ -10,7 +10,7 @@ import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.SettingsActivity;
 
 /**
- * Created by Navendu Agarwal on 20-Jun-16.
+ * Detail Page Activity
  */
 public class DetailActivity extends AppCompatActivity {
 

@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.SettingsActivity;
 
+/**
+ * Main activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

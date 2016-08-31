@@ -38,6 +38,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * Fragment for main page listing
+ */
 
 public class MoviesFragment extends Fragment {
     private MoviesAdapter moviesAdapter;

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/touch_selector">
+    android:background="@drawable/touch_selector"
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/movieThumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:elevation="4dp"
         android:scaleType="centerCrop"
-        tools:src="@drawable/placeholder_poster" />
-</FrameLayout>
+        tools:src="@drawable/placeholder_poster"
+        tools:targetApi="21" />
+</RelativeLayout>

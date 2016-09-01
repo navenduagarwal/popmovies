@@ -55,7 +55,29 @@ public class MoviesFragment extends Fragment {
     }
 
     public void updateMovies() {
-        FetchMovieTasks movieTasks = new FetchMovieTasks(moviesAdapter);
+        FetchMovieTasks movieTasks = new FetchMovieTasks();
+        movieTasks.setUpdateListener(new FetchMovieTasks.OnUpdateListener() {
+            @Override
+            public void OnUpdate(ArrayList<Movie> result) {
+                //updating adapter
+                moviesAdapter.clear();
+                for (Movie moviesStr : result) {
+                    moviesAdapter.add(moviesStr);
+                }
+                //To autoclick first movie
+                if (mPosition != GridView.INVALID_POSITION) {
+                    mGridView.smoothScrollToPosition(mPosition);
+                } else if (MainActivity.mTwoPane) {
+                    mGridView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mGridView.performItemClick(mGridView, 0, mGridView.getAdapter().getItemId(0));
+                        }
+                    });
+                }
+            }
+        });
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortBy = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
         movieTasks.execute(sortBy);

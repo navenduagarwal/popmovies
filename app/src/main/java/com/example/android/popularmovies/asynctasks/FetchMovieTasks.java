@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.android.popularmovies.BuildConfig;
-import com.example.android.popularmovies.main.MoviesAdapter;
 import com.example.android.popularmovies.model.Movie;
 
 import org.json.JSONArray;
@@ -26,12 +25,12 @@ import java.util.ArrayList;
 public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     private final String LOG_TAG = FetchMovieTasks.class.getSimpleName();
-    private MoviesAdapter moviesAdapter;
 
-    public FetchMovieTasks(MoviesAdapter moviesAdapter) {
-        this.moviesAdapter = moviesAdapter;
+    public OnUpdateListener listener;
+
+    public void setUpdateListener(OnUpdateListener listener) {
+        this.listener = listener;
     }
-
 
     private ArrayList<Movie> getMoviesDataFromJson(String moviesJsonStr)
             throws JSONException {
@@ -171,11 +170,15 @@ public class FetchMovieTasks extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     protected void onPostExecute(ArrayList<Movie> result) {
         if (result != null) {
-            moviesAdapter.clear();
-            for (Movie moviesStr : result) {
-                moviesAdapter.add(moviesStr);
+            if (listener != null) {
+                listener.OnUpdate(result);
             }
-
         }
     }
+
+    public interface OnUpdateListener {
+        void OnUpdate(ArrayList<Movie> movies);
+    }
+
+
 }

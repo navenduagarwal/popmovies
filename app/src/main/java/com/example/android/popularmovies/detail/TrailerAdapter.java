@@ -29,26 +29,23 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    private int headerLayout, itemLayout;
     private ArrayList<Trailer> trailers;
     private Context context;
     private Movie mMovie;
 
-    public TrailerAdapter(Context context, Movie movie, ArrayList<Trailer> trailers, int itemLayout, int headerLayout) {
+    public TrailerAdapter(Context context, ArrayList<Trailer> trailers, Movie movie) {
         this.trailers = trailers;
         this.context = context;
-        this.itemLayout = itemLayout;
-        this.headerLayout = headerLayout;
         this.mMovie = movie;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_HEADER) {
-            View v = LayoutInflater.from (parent.getContext ()).inflate (headerLayout, parent, false);
+            View v = LayoutInflater.from (parent.getContext ()).inflate (context.getResources().getLayout(R.layout.list_item_detail_header), parent, false);
             return new HeaderViewHolder (v);
         } else if(viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from (parent.getContext ()).inflate (itemLayout, parent, false);
+            View v = LayoutInflater.from (parent.getContext ()).inflate (context.getResources().getLayout(R.layout.list_item_trailer), parent, false);
             return new TrailerViewHolder (v);
         }
         return null;

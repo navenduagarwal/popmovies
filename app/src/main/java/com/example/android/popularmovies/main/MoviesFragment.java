@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.asynctasks.FetchMovieTasks;
 import com.example.android.popularmovies.detail.DetailActivity;
 import com.example.android.popularmovies.model.Movie;
+import com.example.android.popularmovies.utils.Constants;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,8 @@ import java.util.ArrayList;
 
 public class MoviesFragment extends Fragment {
     private MoviesAdapter moviesAdapter;
+    private GridView mGridView;
+    private int mPosition = GridView.INVALID_POSITION;
     public MoviesFragment() {
     }
 
@@ -86,20 +90,45 @@ public class MoviesFragment extends Fragment {
 //                        new ArrayList<String>());
 
         moviesAdapter = new MoviesAdapter(getContext(), new ArrayList<Movie>());
-        GridView listView = (GridView) rootView.findViewById(R.id.listview_movies);
-        listView.setAdapter(moviesAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView = (GridView) rootView.findViewById(R.id.listview_movies);
+        mGridView.setAdapter(moviesAdapter);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movieDetail = moviesAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), DetailActivity.class);
-                Movie mParcel = movieDetail;
-                intent.putExtra("myMovie", mParcel);
-                startActivity(intent);
+                Log.d("navendu movie fragment", movieDetail.toString());
+//                Intent intent = new Intent(getActivity(), DetailActivity.class);
+//                intent.putExtra(Constants.KEY_MOVIE, movieDetail);
+//                startActivity(intent);
+                ((Callback)getActivity()).onItemSelected(movieDetail);
+                mPosition = position;
             }
         });
+
+        if(savedInstanceState !=null && savedInstanceState.containsKey(Constants.SELECTED_KEY)){
+            mPosition = savedInstanceState.getInt(Constants.SELECTED_KEY);
+        }
 
         return rootView;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(mPosition != GridView.INVALID_POSITION){
+            outState.putInt(Constants.SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(Movie movie);
+    }
 }

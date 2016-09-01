@@ -1,15 +1,16 @@
 package com.example.android.popularmovies.asynctasks;
 
-import android.content.Context;
+import android.app.IntentService;
+import android.app.Service;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.android.popularmovies.BuildConfig;
-import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.detail.TrailerAdapter;
-import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.model.Trailer;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -25,29 +26,126 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * Task to fetch list of trailers for particular movie
- */
-public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer>> {
-    private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
-    private TrailerAdapter trailerAdapter;
-    private Context mContext;
-    private RecyclerView recyclerView;
-    private Movie movie;
 
-    public FetchTrailersTask(Context context, RecyclerView recyclerView, Movie movie) {
-        this.mContext = context;
-        this.recyclerView = recyclerView;
-        this.movie = movie;
+/**
+ * Service to download list of trailers
+ */
+public class FetchTrailersService extends IntentService{
+    private TrailerAdapter trailerAdapter;
+    private final String LOG_TAG = "TrailersService#";
+
+    /**
+     * Actions
+     **/
+    public static final String ACTION_DOWNLOAD = "action_download";
+    public static final String ACTION_COMPLETED = "action_completed";
+    public static final String ACTION_ERROR = "action_error";
+    /**
+
+    /**
+     * Extras
+     **/
+    public static final String EXTRA_MOVIE_ID = "extra_movie_id";
+    public static final String EXTRA_TRAILERS = "extra_trailers";
+    public static final String EXTRA_DOWNLOAD_ERROR = "extra_download_ERROR";
+
+    public FetchTrailersService(){
+        super("TrailersService#");
     }
 
-    private ArrayList<Trailer> getTrailersDataFromJson(String trailerJsonStr) throws JSONException {
+    public static IntentFilter getIntentFilter() {
+        IntentFilter filter = new IntentFilter();
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        filter.addAction(ACTION_COMPLETED);
+        filter.addAction(ACTION_ERROR);
+        return filter;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        String movieId = intent.getStringExtra(EXTRA_MOVIE_ID);
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+
+        String trailerJsonStr = null;
+
+        try {
+            final String APIKEY_PARAM = "api_key";
+
+            Uri.Builder builtUri = new Uri.Builder();
+            builtUri.scheme("https")
+                    .authority(Constants.API_AUTHORITY)
+                    .appendPath(Constants.API_VERSION)
+                    .appendPath(Constants.API_CONTENT)
+                    .appendPath(movieId)
+                    .appendPath(Constants.API_RESOURCE)
+                    .appendQueryParameter(APIKEY_PARAM, BuildConfig.MOVIESDB_API_KEY).build();
+
+            URL url = new URL(builtUri.toString());
+
+            Log.v(LOG_TAG, "Built URL: " + builtUri.toString());
+
+            //Create the request to moviesdb and open the connection
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.connect();
+
+            //Read the input stream into a string
+            InputStream inputStream = urlConnection.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+            if (inputStream == null) {
+                return;
+            }
+
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                // But it does make debugging a *lot* easier if you print out the completed
+                // buffer for debugging.
+                buffer.append(line + "\n");
+            }
+
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return;
+            }
+
+            trailerJsonStr = buffer.toString();
+            Log.i(LOG_TAG, "Downloaded Data" + trailerJsonStr);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e(LOG_TAG, "Error", e);
+            return;
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException e) {
+                    Log.e(LOG_TAG, "Error closing stream", e);
+                }
+            }
+        }
+        try {
+            getTrailersDataFromJson(trailerJsonStr);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
+        }
+    }
+
+    private void getTrailersDataFromJson(String trailerJsonStr) throws JSONException {
         final String OWM_RESULTS = "results";
         final String OWM_NAME = "name";
         final String OWM_KEY = "key";
         final String OWM_SITE = "site";
 
-        JSONObject trailerJSON = new JSONObject(trailerJsonStr);
+       try{ JSONObject trailerJSON = new JSONObject(trailerJsonStr);
         JSONArray trailersArray = trailerJSON.getJSONArray(OWM_RESULTS);
 
         ArrayList<Trailer> resultStrs = new ArrayList<>();
@@ -68,97 +166,14 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
                 resultStrs.add(newTrailer);
             }
         }
-        return resultStrs;
-    }
-
-
-    @Override
-    protected ArrayList<Trailer> doInBackground(String... params) {
-        if (params.length == 0) {
-            return null;
-        }
-
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-
-        String trailerJsonStr = null;
-
-        try {
-            final String APIKEY_PARAM = "api_key";
-
-            Uri.Builder builtUri = new Uri.Builder();
-            builtUri.scheme("https")
-                    .authority(Constants.API_AUTHORITY)
-                    .appendPath(Constants.API_VERSION)
-                    .appendPath(Constants.API_CONTENT)
-                    .appendPath(params[0])
-                    .appendPath(Constants.API_RESOURCE)
-                    .appendQueryParameter(APIKEY_PARAM, BuildConfig.MOVIESDB_API_KEY).build();
-
-            URL url = new URL(builtUri.toString());
-
-            Log.v(LOG_TAG, "Built URL: " + builtUri.toString());
-
-            //Create the request to moviesdb and open the connection
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-
-            //Read the input stream into a string
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                return null;
-            }
-
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                // But it does make debugging a *lot* easier if you print out the completed
-                // buffer for debugging.
-                buffer.append(line + "\n");
-            }
-
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
-                return null;
-            }
-
-            trailerJsonStr = buffer.toString();
-            Log.i(LOG_TAG, "Downloaded Data" + trailerJsonStr);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e(LOG_TAG, "Error", e);
-            return null;
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
-                }
-            }
-        }
-        try {
-            return getTrailersDataFromJson(trailerJsonStr);
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    protected void onPostExecute(ArrayList<Trailer> result) {
-        if (result != null) {
-            trailerAdapter = new TrailerAdapter(mContext,result,movie);
-            recyclerView.setAdapter(trailerAdapter);
-            recyclerView.invalidate();
-        }
+           Log.d(LOG_TAG,"Sending intent");
+           Intent broadcast = new Intent(ACTION_COMPLETED);
+           broadcast.addCategory(Intent.CATEGORY_DEFAULT);
+           broadcast.putExtra(EXTRA_TRAILERS,resultStrs);
+           LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcast);
+    } catch (JSONException e){
+       Log.e(LOG_TAG, e.getMessage(), e);
+           e.printStackTrace();
+       }
     }
 }

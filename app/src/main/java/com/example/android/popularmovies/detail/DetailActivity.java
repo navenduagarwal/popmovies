@@ -1,14 +1,10 @@
 package com.example.android.popularmovies.detail;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.SettingsActivity;
 import com.example.android.popularmovies.utils.Constants;
 
 /**
@@ -22,7 +18,6 @@ public class DetailActivity extends AppCompatActivity {
             setContentView(R.layout.activity_detail);
         // Add this line in order for this fragment to handle menu events.
         if (savedInstanceState == null) {
-
             Bundle arguments = new Bundle();
             arguments.putParcelable(Constants.KEY_MOVIE_1,getIntent().getParcelableExtra(Constants.KEY_MOVIE));
 

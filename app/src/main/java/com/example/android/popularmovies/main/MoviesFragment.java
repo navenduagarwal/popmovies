@@ -1,11 +1,9 @@
 package com.example.android.popularmovies.main;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +15,6 @@ import android.widget.GridView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.asynctasks.FetchMovieTasks;
-import com.example.android.popularmovies.detail.DetailActivity;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -31,6 +28,7 @@ public class MoviesFragment extends Fragment {
     private MoviesAdapter moviesAdapter;
     private GridView mGridView;
     private int mPosition = GridView.INVALID_POSITION;
+
     public MoviesFragment() {
     }
 
@@ -72,22 +70,8 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        int resultLength = movieList.size();
-//        String [] imagesURL = new String[resultLength];
-//        String [] movieTitle = new String[resultLength];
-//        for (int i=0;i<resultLength;i++){
-//            imagesURL[i]=movieList.get(i).getPosterURL();
-//            movieTitle[i]=movieList.get(i).getTitle();
-//        }
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-//        mForecastAdapter =
-//                new ArrayAdapter<String>(
-//                        getActivity(), // The current context (this activity)
-//                        R.layout.list_item_movies, // The name of the layout ID.
-//                        R.id.list_item_movies_textview, // The ID of the textview to populate.
-//                        new ArrayList<String>());
 
         moviesAdapter = new MoviesAdapter(getContext(), new ArrayList<Movie>());
         mGridView = (GridView) rootView.findViewById(R.id.listview_movies);
@@ -96,16 +80,13 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Movie movieDetail = moviesAdapter.getItem(position);
-                Log.d("navendu movie fragment", movieDetail.toString());
-//                Intent intent = new Intent(getActivity(), DetailActivity.class);
-//                intent.putExtra(Constants.KEY_MOVIE, movieDetail);
-//                startActivity(intent);
-                ((Callback)getActivity()).onItemSelected(movieDetail);
+
+                ((Callback) getActivity()).onItemSelected(movieDetail);
                 mPosition = position;
             }
         });
 
-        if(savedInstanceState !=null && savedInstanceState.containsKey(Constants.SELECTED_KEY)){
+        if (savedInstanceState != null && savedInstanceState.containsKey(Constants.SELECTED_KEY)) {
             mPosition = savedInstanceState.getInt(Constants.SELECTED_KEY);
         }
 
@@ -114,7 +95,7 @@ public class MoviesFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mPosition != GridView.INVALID_POSITION){
+        if (mPosition != GridView.INVALID_POSITION) {
             outState.putInt(Constants.SELECTED_KEY, mPosition);
         }
         super.onSaveInstanceState(outState);

@@ -7,7 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.SettingsActivity;
@@ -29,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         if(findViewById(R.id.movies_detail_container) != null){
             mTwoPane = true;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
             }
         } else {
             mTwoPane = false;
-//            getSupportActionBar().setElevation(0f);
+            getSupportActionBar().setElevation(0f);
         }
 
        MoviesFragment moviesFragment = ((MoviesFragment) getSupportFragmentManager()

@@ -104,6 +104,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "ReviewsDialog should open from here", Toast.LENGTH_SHORT).show(); //TODO
+//                    DialogFragment dialog = ReviewsDialogFragment.newInstance(mReviews);
+//                    dialog.show(context.this.getFragmentManager(), "ReviewsDialogFragment");
                 }
             });
 

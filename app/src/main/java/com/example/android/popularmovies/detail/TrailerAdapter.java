@@ -103,7 +103,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             headerHolder.reviewsView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Hello", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "ReviewsDialog should open from here", Toast.LENGTH_SHORT).show(); //TODO
                 }
             });
 

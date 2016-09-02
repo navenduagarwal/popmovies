@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Popular Movies</string>
 
     <!--Menu Items-->
@@ -27,5 +27,8 @@
     <string name ="heading_trailers">Trailers:</string>
     <string name="detail_poster_content_description">Movie Poster</string>
     <string name="list_empty_trailers">No Trailers Available</string>
+    <string name="no_reviews_suffix">No critic reviews</string>
+    <string name="single_review_text">1 critic review</string>
+    <string name="format_multiple_reviews_suffix"><xliff:g id="numbers">%1$s</xliff:g> critic reviews</string>
 
 </resources>

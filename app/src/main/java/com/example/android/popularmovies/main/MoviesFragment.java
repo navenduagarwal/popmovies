@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.asynctasks.FetchMovieTasks;
@@ -28,6 +29,7 @@ public class MoviesFragment extends Fragment {
     private MoviesAdapter moviesAdapter;
     private GridView mGridView;
     private int mPosition = GridView.INVALID_POSITION;
+    private ProgressBar mProgressBar;
 
     public MoviesFragment() {
     }
@@ -75,6 +77,8 @@ public class MoviesFragment extends Fragment {
                         }
                     });
                 }
+                mProgressBar.setVisibility(View.GONE);
+                mGridView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -90,14 +94,26 @@ public class MoviesFragment extends Fragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (moviesAdapter != null) {
+            moviesAdapter.clear();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.main_progressbar);
+
         moviesAdapter = new MoviesAdapter(getContext(), new ArrayList<Movie>());
         mGridView = (GridView) rootView.findViewById(R.id.listview_movies);
         mGridView.setAdapter(moviesAdapter);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mGridView.setVisibility(View.GONE);
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {

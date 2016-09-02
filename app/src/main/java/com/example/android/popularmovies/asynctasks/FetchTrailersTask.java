@@ -1,15 +1,10 @@
 package com.example.android.popularmovies.asynctasks;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.android.popularmovies.BuildConfig;
-import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.detail.TrailerAdapter;
-import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.model.Trailer;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -30,15 +25,11 @@ import java.util.ArrayList;
  */
 public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer>> {
     private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
-    private TrailerAdapter trailerAdapter;
-    private Context mContext;
-    private RecyclerView recyclerView;
-    private Movie movie;
 
-    public FetchTrailersTask(Context context, RecyclerView recyclerView, Movie movie) {
-        this.mContext = context;
-        this.recyclerView = recyclerView;
-        this.movie = movie;
+    public OnUpdateListener listener;
+
+    public void setUpdateListener(OnUpdateListener listener) {
+        this.listener = listener;
     }
 
     private ArrayList<Trailer> getTrailersDataFromJson(String trailerJsonStr) throws JSONException {
@@ -71,7 +62,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
         return resultStrs;
     }
 
-
     @Override
     protected ArrayList<Trailer> doInBackground(String... params) {
         if (params.length == 0) {
@@ -92,7 +82,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
                     .appendPath(Constants.API_VERSION)
                     .appendPath(Constants.API_CONTENT)
                     .appendPath(params[0])
-                    .appendPath(Constants.API_RESOURCE)
+                    .appendPath(Constants.API_RESOURCE_TRAILERS)
                     .appendQueryParameter(APIKEY_PARAM, BuildConfig.MOVIESDB_API_KEY).build();
 
             URL url = new URL(builtUri.toString());
@@ -156,9 +146,13 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
 
     protected void onPostExecute(ArrayList<Trailer> result) {
         if (result != null) {
-            trailerAdapter = new TrailerAdapter(mContext,result,movie);
-            recyclerView.setAdapter(trailerAdapter);
-            recyclerView.invalidate();
+            if (listener != null) {
+                listener.OnUpdate(result);
+            }
         }
+    }
+
+    public interface OnUpdateListener {
+        void OnUpdate(ArrayList<Trailer> reviews);
     }
 }

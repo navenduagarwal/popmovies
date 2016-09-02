@@ -31,4 +31,6 @@
     <string name="single_review_text">1 critic review</string>
     <string name="format_multiple_reviews_suffix"><xliff:g id="numbers">%1$s</xliff:g> critic reviews</string>
 
+    <string name="positive_button">Close</string>
+
 </resources>

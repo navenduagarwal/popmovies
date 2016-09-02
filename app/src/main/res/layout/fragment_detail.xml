@@ -17,6 +17,16 @@
         android:id="@+id/recycle_view_trailers"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
         android:scrollbars="vertical"
         android:visibility="visible" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycle_view_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/recycle_view_trailers"
+        android:scrollbars="vertical"
+        android:visibility="visible" />
+
 </RelativeLayout>

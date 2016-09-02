@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.model.Movie;
@@ -32,7 +33,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Context context;
     private Movie mMovie;
 
-    public TrailerAdapter(Context context, ArrayList<Trailer> trailers, Movie movie, ArrayList<Review> reviews) {
+    public TrailerAdapter(Context context, ArrayList<Trailer> trailers,
+                          Movie movie, ArrayList<Review> reviews) {
         this.trailers = trailers;
         this.context = context;
         this.mMovie = movie;
@@ -98,6 +100,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 reviewsText = context.getString(R.string.no_reviews_suffix);
             }
             headerHolder.reviewsView.setText(reviewsText);
+            headerHolder.reviewsView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Hello", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             /**Update plot Text in detail view*/
             headerHolder.plotView.setText(mMovie.getPlot());
 

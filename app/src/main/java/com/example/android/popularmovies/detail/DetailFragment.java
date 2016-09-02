@@ -60,6 +60,7 @@ public class DetailFragment extends Fragment {
             mRecycleViewTrailer.setHasFixedSize(true);
             mRecycleViewTrailer.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecycleViewTrailer.setVisibility(View.GONE);
+
             progressBar.setVisibility(View.VISIBLE);
             updateReviews();
         } else {
@@ -97,5 +98,4 @@ public class DetailFragment extends Fragment {
         });
         trailersTask.execute(movieDetail.getId());
     }
-
 }

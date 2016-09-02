@@ -24,4 +24,7 @@
         <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
 
+    <style name="CustomTheme.Dialog" parent="Theme.AppCompat.Light.Dialog" />
+
+
 </resources>

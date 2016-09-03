@@ -71,6 +71,7 @@ public class MoviesFragment extends Fragment {
                 mProgressBar.setVisibility(View.GONE);
                 mGridView.setVisibility(View.GONE);
                 Toast.makeText(getContext(), getResources().getString(R.string.toast_no_favourite_data), Toast.LENGTH_LONG).show();
+                ((Callback) getActivity()).onItemSelected(null);
             }
 
         } else {

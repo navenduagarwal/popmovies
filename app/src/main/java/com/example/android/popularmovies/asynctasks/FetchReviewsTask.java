@@ -112,7 +112,7 @@ public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>>
             }
 
             trailerJsonStr = buffer.toString();
-            Log.i(LOG_TAG, "Downloaded Data" + trailerJsonStr);
+//            Log.i(LOG_TAG, "Downloaded Data" + trailerJsonStr);
 
         } catch (IOException e) {
             e.printStackTrace();

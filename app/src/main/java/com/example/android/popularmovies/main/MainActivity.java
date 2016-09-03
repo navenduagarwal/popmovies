@@ -1,5 +1,6 @@
 package com.example.android.popularmovies.main;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.SettingsActivity;
 import com.example.android.popularmovies.detail.DetailActivity;
 import com.example.android.popularmovies.detail.DetailFragment;
+import com.example.android.popularmovies.detail.reviews.ReviewsDialogFragment;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -93,5 +96,11 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
                     intent.putExtra(Constants.KEY_MOVIE,movie);
             startActivity(intent);
         }
+    }
+
+    public void showReviewsDialog(View view) {
+
+        DialogFragment dialogFragment = new ReviewsDialogFragment();
+        dialogFragment.show(MainActivity.this.getFragmentManager(), "ReviewsDialogFragment");
     }
 }

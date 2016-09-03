@@ -19,6 +19,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private ArrayList<Review> mReviews;
     private Activity activity;
 
+
     public ReviewsAdapter(Activity activity, ArrayList<Review> mReviews) {
         this.mReviews = mReviews;
         this.activity = activity;
@@ -35,16 +36,23 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof ReviewViewHolder) {
             final Review currentReview = mReviews.get(position);
             ReviewViewHolder reviewViewHolder = (ReviewViewHolder) holder;
+            if (mReviews.size() > 1) {
+                reviewViewHolder.author.setText(String.format(activity.getResources().getString(R.string.format_multiple_reviews_author), position + 1, currentReview.getAuthor()));
+            } else {
+                reviewViewHolder.author.setText(String.format(activity.getResources().getString(R.string.format_single_reviews_author), currentReview.getAuthor()));
 
-            reviewViewHolder.author.setText(currentReview.getAuthor());
-            reviewViewHolder.content.setText(currentReview.getContent());
+            }
+            String content = currentReview.getContent().replace("\\r\\n", "\n");
+            reviewViewHolder.content.setText(content);
         }
     }
 
+
     @Override
     public int getItemCount() {
-        return 0;
+        return mReviews.size();
     }
+
 
     public static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView author;
@@ -56,4 +64,5 @@ public class ReviewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             this.content = (TextView) itemView.findViewById(R.id.list_item_content_textview);
         }
     }
+
 }

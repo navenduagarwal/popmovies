@@ -117,7 +117,7 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
             }
 
             trailerJsonStr = buffer.toString();
-            Log.i(LOG_TAG, "Downloaded Data" + trailerJsonStr);
+//            Log.i(LOG_TAG, "Downloaded Data" + trailerJsonStr);
 
         } catch (IOException e) {
             e.printStackTrace();

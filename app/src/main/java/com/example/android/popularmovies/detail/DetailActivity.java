@@ -1,10 +1,13 @@
 package com.example.android.popularmovies.detail;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.detail.reviews.ReviewsDialogFragment;
 import com.example.android.popularmovies.utils.Constants;
 
 /**
@@ -29,6 +32,12 @@ public class DetailActivity extends AppCompatActivity {
                     .add(R.id.movies_detail_container, fragment)
                     .commit();
         }
+    }
+
+    public void showReviewsDialog(View view) {
+
+        DialogFragment dialogFragment = new ReviewsDialogFragment();
+        dialogFragment.show(DetailActivity.this.getFragmentManager(), "ReviewsDialogFragment");
     }
 
 //    @Override

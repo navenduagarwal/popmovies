@@ -29,8 +29,8 @@ public class DetailFragment extends Fragment {
     private Movie movieDetail;
     private RecyclerView mRecycleViewTrailer;
     private TrailerAdapter mTrailerAdapter;
-    private ArrayList<Review> mReviews;
     private ProgressBar progressBar;
+    private ArrayList<Review> mReviews;
 
 
     public DetailFragment() {

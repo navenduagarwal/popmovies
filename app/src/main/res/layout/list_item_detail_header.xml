@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".detail.DetailFragment">
+
     <TextView
         android:id="@+id/detail_title_textView"
         android:layout_width="match_parent"
@@ -20,6 +21,7 @@
         android:textColor="#ffffff"
         android:textSize="48sp"
         tools:text="Placeholder" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -29,6 +31,7 @@
         android:paddingRight="16dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp">
+
         <ImageView
             android:id="@+id/detail_poster_imageview"
             android:layout_width="match_parent"
@@ -39,11 +42,13 @@
             android:contentDescription="@string/detail_poster_content_description"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder_poster" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/detail_year_textview"
                 android:layout_width="match_parent"
@@ -51,6 +56,7 @@
                 android:layout_marginBottom="4dp"
                 android:textSize="24sp"
                 tools:text="2015" />
+
             <TextView
                 android:id="@+id/detail_ratings_textview"
                 android:layout_width="match_parent"
@@ -59,11 +65,14 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="8.1/10" />
+
             <TextView
                 android:id="@+id/detail_reviews_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="@drawable/touch_selector"
+                android:onClick="showReviewsDialog"
                 android:textColor="@color/colorAccent"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -88,14 +97,15 @@
         android:paddingRight="16dp"
         android:paddingStart="16dp"
         android:paddingTop="16dp"
-        tools:text="Every child comes into the world full of promise,and none more so than Chappie:he is gifted, special, a prodigy. Chappie he is a robot"/>
+        tools:text="Every child comes into the world full of promise,and none more so than Chappie:he is gifted, special, a prodigy. Chappie he is a robot" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/darker_gray" />
+
     <TextView
         android:id="@+id/detail_trailer_heading_textView"
         android:layout_width="match_parent"
@@ -108,4 +118,4 @@
         android:paddingTop="8dp"
         android:text="@string/heading_trailers"
         android:textSize="16sp" />
-    </LinearLayout>
+</LinearLayout>

@@ -30,6 +30,8 @@
     <string name="no_reviews_suffix">No critic reviews</string>
     <string name="single_review_text">1 critic review</string>
     <string name="format_multiple_reviews_suffix"><xliff:g id="numbers">%1$s</xliff:g> critic reviews</string>
+    <string name="format_single_reviews_author">Review by <xliff:g id="author">%1$s</xliff:g></string>
+    <string name="format_multiple_reviews_author">%1$s. Review by %2$s</string>
 
     <string name="positive_button">Close</string>
 

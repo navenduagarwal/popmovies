@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.model.Movie;
@@ -100,14 +99,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 reviewsText = context.getString(R.string.no_reviews_suffix);
             }
             headerHolder.reviewsView.setText(reviewsText);
-            headerHolder.reviewsView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "ReviewsDialog should open from here", Toast.LENGTH_SHORT).show(); //TODO
-//                    DialogFragment dialog = ReviewsDialogFragment.newInstance(mReviews);
-//                    dialog.show(context.this.getFragmentManager(), "ReviewsDialogFragment");
-                }
-            });
 
             /**Update plot Text in detail view*/
             headerHolder.plotView.setText(mMovie.getPlot());

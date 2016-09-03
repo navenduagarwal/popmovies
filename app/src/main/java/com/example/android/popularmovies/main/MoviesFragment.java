@@ -64,28 +64,35 @@ public class MoviesFragment extends Fragment {
         movieTasks.setUpdateListener(new FetchMovieTasks.OnUpdateListener() {
             @Override
             public void OnUpdate(ArrayList<Movie> result) {
-                //updating adapter
-                moviesAdapter.clear();
-                for (Movie moviesStr : result) {
-                    moviesAdapter.add(moviesStr);
-                }
-                //To autoclick first movie
-                if (mPosition != GridView.INVALID_POSITION) {
-                    mGridView.smoothScrollToPosition(mPosition);
-                } else if (MainActivity.mTwoPane) {
-                    mGridView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mGridView.performItemClick(mGridView, 0, mGridView.getAdapter().getItemId(0));
-                        }
-                    });
-                }
-                mProgressBar.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
+                updateViewWithResults(result);
             }
         });
 
         movieTasks.execute(sortBy);
+    }
+
+
+    public void updateViewWithResults(ArrayList<Movie> result) {
+
+        //updating adapter
+        moviesAdapter.clear();
+        for (Movie moviesStr : result) {
+            moviesAdapter.add(moviesStr);
+        }
+        //To autoclick first movie
+        if (mPosition != GridView.INVALID_POSITION) {
+            mGridView.smoothScrollToPosition(mPosition);
+        } else if (MainActivity.mTwoPane) {
+            mGridView.post(new Runnable() {
+                @Override
+                public void run() {
+                    mGridView.performItemClick(mGridView, 0, mGridView.getAdapter().getItemId(0));
+                }
+            });
+        }
+        mProgressBar.setVisibility(View.GONE);
+        mGridView.setVisibility(View.VISIBLE);
+
     }
 
     @Override

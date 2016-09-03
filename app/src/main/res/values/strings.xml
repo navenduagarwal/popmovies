@@ -18,11 +18,13 @@
     <string name="pref_sort_label_popular">Popular</string>
     <string name="pref_sort_label_top">Top Rated</string>
     <string name="pref_sort_label_upcoming">Upcoming</string>
+    <string name="pref_sort_label_favorites">Favorites</string>
 
     <string name="pref_sort_now" translatable="false">now_playing</string>
     <string name="pref_sort_popular" translatable="false">popular</string>
     <string name="pref_sort_top" translatable="false">top_rated</string>
     <string name="pref_sort_upcoming" translatable="false">upcoming</string>
+    <string name="pref_sort_favorites">favorites</string>
 
     <string name ="heading_trailers">Trailers:</string>
     <string name="detail_poster_content_description">Movie Poster</string>
@@ -36,9 +38,9 @@
     <string name="positive_button">Close</string>
 
     <!-- DB Log values -->
-    <string name="log_data_movie_added">Movie marked as favourite</string>
-    <string name="log_data_movie_add_failed">Movie mark as favourite failed, Try Again!</string>
-    <string name="log_data_movie_deleted">Movie removed from favourite List</string>
-    <string name="log_data_movie_delete_failed">Movie could not be removed from favourite list, Try Again!</string>
+    <string name="log_data_movie_added">Movie marked as a favorite</string>
+    <string name="log_data_movie_add_failed">Movie mark as a favorite failed, Try Again!</string>
+    <string name="log_data_movie_deleted">Movie removed from a favorite List</string>
+    <string name="log_data_movie_delete_failed">Movie could not be removed from a favorite list, Try Again!</string>
 
 </resources>

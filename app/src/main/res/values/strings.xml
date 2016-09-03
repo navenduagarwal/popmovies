@@ -36,6 +36,9 @@
     <string name="positive_button">Close</string>
 
     <!-- DB Log values -->
-    <string name="log_data_movie_added">New movie inserted successfully</string>
-    <string name="log_data_movie_failed">Movie insert failed</string>
+    <string name="log_data_movie_added">Movie marked as favourite</string>
+    <string name="log_data_movie_add_failed">Movie mark as favourite failed, Try Again!</string>
+    <string name="log_data_movie_deleted">Movie removed from favourite List</string>
+    <string name="log_data_movie_delete_failed">Movie could not be removed from favourite list, Try Again!</string>
+
 </resources>

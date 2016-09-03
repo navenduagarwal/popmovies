@@ -121,17 +121,20 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 null, //column to filter by row groups
                 null //sort order
         );
-        result.moveToFirst();
-        String title = result.getString(result.getColumnIndex(MovieEntry.COLUMN_TITLE));
-        String ratings = result.getString(result.getColumnIndex(MovieEntry.COLUMN_RATINGS));
-        String posterURL = result.getString(result.getColumnIndex(MovieEntry.COLUMN_POSTER_URL));
-        String plot = result.getString(result.getColumnIndex(MovieEntry.COLUMN_PLOT));
-        String releaseDate = result.getString(result.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE));
-        Movie movie = new Movie(id, title, ratings, posterURL,
-                plot, releaseDate);
-        db.close();
-        result.close();
-        return movie;
+        if (result != null && result.getCount() > 0) {
+            result.moveToFirst();
+            String title = result.getString(result.getColumnIndex(MovieEntry.COLUMN_TITLE));
+            String ratings = result.getString(result.getColumnIndex(MovieEntry.COLUMN_RATINGS));
+            String posterURL = result.getString(result.getColumnIndex(MovieEntry.COLUMN_POSTER_URL));
+            String plot = result.getString(result.getColumnIndex(MovieEntry.COLUMN_PLOT));
+            String releaseDate = result.getString(result.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE));
+            Movie movie = new Movie(id, title, ratings, posterURL,
+                    plot, releaseDate);
+            db.close();
+            result.close();
+            return movie;
+        }
+        return null;
     }
 
     //Get Review Data from table
@@ -146,6 +149,8 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 null, //column to filter by row groups
                 null //sort order
         );
+
+        if (result != null && result.getCount() > 0) {
         result.moveToFirst();
         String id = result.getString(result.getColumnIndex(ReviewEntry.COLUMN_ID));
         String author = result.getString(result.getColumnIndex(ReviewEntry.COLUMN_AUTHOR));
@@ -154,7 +159,9 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         Review review = new Review(id, author, content);
         db.close();
         result.close();
-        return review;
+            return review;
+        }
+        return null;
     }
 
     //Delete all table entries
@@ -198,21 +205,24 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor getList = db.rawQuery("SELECT * FROM " + MovieEntry.TABLE_NAME, null);
-        getList.moveToFirst();
-        while (!getList.isAfterLast()) {
-            String id = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_ID));
-            String title = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_TITLE));
-            String ratings = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_RATINGS));
-            String posterURL = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_POSTER_URL));
-            String plot = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_PLOT));
-            String releaseDate = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE));
-            Movie movie = new Movie(id, title, ratings, posterURL,
-                    plot, releaseDate);
-            movieList.add(movie);
-            getList.moveToNext();
+        if (getList != null && getList.getCount() > 0) {
+            getList.moveToFirst();
+            while (!getList.isAfterLast()) {
+                String id = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_ID));
+                String title = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_TITLE));
+                String ratings = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_RATINGS));
+                String posterURL = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_POSTER_URL));
+                String plot = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_PLOT));
+                String releaseDate = getList.getString(getList.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE));
+                Movie movie = new Movie(id, title, ratings, posterURL,
+                        plot, releaseDate);
+                movieList.add(movie);
+                getList.moveToNext();
+            }
+            getList.close();
+            return movieList;
         }
-        getList.close();
-        return movieList;
+        return null;
     }
 
     public ArrayList<Review> getAllReviewsData() {
@@ -220,16 +230,19 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor getList = db.rawQuery("SELECT * FROM " + ReviewEntry.TABLE_NAME, null);
-        getList.moveToFirst();
-        while (!getList.isAfterLast()) {
-            String id = getList.getString(getList.getColumnIndex(ReviewEntry.COLUMN_ID));
-            String author = getList.getString(getList.getColumnIndex(ReviewEntry.COLUMN_AUTHOR));
-            String content = getList.getString(getList.getColumnIndex(ReviewEntry.COLUMN_CONTENT));
-            Review review = new Review(id, author, content);
-            reviewsList.add(review);
-            getList.moveToNext();
+        if (getList != null && getList.getCount() > 0) {
+            getList.moveToFirst();
+            while (!getList.isAfterLast()) {
+                String id = getList.getString(getList.getColumnIndex(ReviewEntry.COLUMN_ID));
+                String author = getList.getString(getList.getColumnIndex(ReviewEntry.COLUMN_AUTHOR));
+                String content = getList.getString(getList.getColumnIndex(ReviewEntry.COLUMN_CONTENT));
+                Review review = new Review(id, author, content);
+                reviewsList.add(review);
+                getList.moveToNext();
+            }
+            getList.close();
+            return reviewsList;
         }
-        getList.close();
-        return reviewsList;
+        return null;
     }
 }

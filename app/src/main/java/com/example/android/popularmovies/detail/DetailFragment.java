@@ -70,7 +70,7 @@ public class DetailFragment extends Fragment {
     }
 
     public void updateReviews() {
-        FetchReviewsTask reviewsTask = new FetchReviewsTask();
+        FetchReviewsTask reviewsTask = new FetchReviewsTask(getContext());
         reviewsTask.setUpdateListener(new FetchReviewsTask.OnUpdateListener() {
             @Override
             public void OnUpdate(ArrayList<Review> reviews) {
@@ -98,4 +98,5 @@ public class DetailFragment extends Fragment {
         });
         trailersTask.execute(movieDetail.getId());
     }
+
 }

@@ -57,6 +57,9 @@ public class MoviesFragment extends Fragment {
     }
 
     public void updateMovies() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String sortBy = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
+
         FetchMovieTasks movieTasks = new FetchMovieTasks();
         movieTasks.setUpdateListener(new FetchMovieTasks.OnUpdateListener() {
             @Override
@@ -82,8 +85,6 @@ public class MoviesFragment extends Fragment {
             }
         });
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String sortBy = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
         movieTasks.execute(sortBy);
     }
 

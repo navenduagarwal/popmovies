@@ -1,10 +1,12 @@
 package com.example.android.popularmovies.asynctasks;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.android.popularmovies.BuildConfig;
+import com.example.android.popularmovies.data.MoviesDbHelper;
 import com.example.android.popularmovies.model.Review;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -25,8 +27,12 @@ import java.util.ArrayList;
  */
 public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>> {
     private static final String LOG_TAG = FetchReviewsTask.class.getSimpleName();
-
     public OnUpdateListener listener;
+    private Context context;
+
+    public FetchReviewsTask(Context context) {
+        this.context = context;
+    }
 
     public void setUpdateListener(OnUpdateListener listener) {
         this.listener = listener;
@@ -43,6 +49,9 @@ public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>>
 
         ArrayList<Review> resultStrs = new ArrayList<>();
 
+        final MoviesDbHelper dbHelper = new MoviesDbHelper(context);
+        dbHelper.deleteAllReviewEntries();
+
         for (int i = 0; i < trailersArray.length(); i++) {
             String id;
             String author;
@@ -56,7 +65,9 @@ public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>>
 
             Review newReview = new Review(id, author, content);
             resultStrs.add(newReview);
+            dbHelper.insertReview(id, author, content);
         }
+        dbHelper.close();
         return resultStrs;
     }
 

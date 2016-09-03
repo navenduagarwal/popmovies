@@ -34,6 +34,7 @@ public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>>
 
     private ArrayList<Review> getTrailersDataFromJson(String trailerJsonStr) throws JSONException {
         final String OWM_RESULTS = "results";
+        final String OWM_ID = "id";
         final String OWM_NAME = "author";
         final String OWM_KEY = "content";
 
@@ -43,15 +44,17 @@ public class FetchReviewsTask extends AsyncTask<String, Void, ArrayList<Review>>
         ArrayList<Review> resultStrs = new ArrayList<>();
 
         for (int i = 0; i < trailersArray.length(); i++) {
+            String id;
             String author;
             String content;
 
             //Get JSON Object representing the movie trailer
             JSONObject trailer = trailersArray.getJSONObject(i);
+            id = trailer.getString(OWM_ID);
             author = trailer.getString(OWM_NAME);
             content = trailer.getString(OWM_KEY);
 
-            Review newReview = new Review(author, content);
+            Review newReview = new Review(id, author, content);
             resultStrs.add(newReview);
         }
         return resultStrs;

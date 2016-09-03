@@ -19,10 +19,12 @@ public class Review implements Parcelable{
         }
     };
 
+    private String id;
     private String author;
     private String content;
 
-    public Review(String author, String content) {
+    public Review(String id, String author, String content) {
+        this.id = id;
         this.author = author;
         this.content = content;
     }
@@ -32,6 +34,7 @@ public class Review implements Parcelable{
     }
 
     public Review(Parcel p){
+        id = p.readString();
         author = p.readString();
         content = p.readString();
     }
@@ -43,8 +46,13 @@ public class Review implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
         parcel.writeString(author);
         parcel.writeString(content);
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getAuthor() {

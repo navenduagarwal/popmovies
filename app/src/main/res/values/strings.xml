@@ -35,4 +35,7 @@
 
     <string name="positive_button">Close</string>
 
+    <!-- DB Log values -->
+    <string name="log_data_movie_added">New movie inserted successfully</string>
+    <string name="log_data_movie_failed">Movie insert failed</string>
 </resources>

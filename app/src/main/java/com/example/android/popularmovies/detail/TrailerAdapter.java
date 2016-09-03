@@ -123,17 +123,17 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         boolean resultDelete = moviesDbHelper.deleteSingleMovieRecord(mMovie.getId());
                         if (resultDelete) {
                             headerHolder.favouriteButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_golden_24dp));
-                            Toast.makeText(context, context.getString(R.string.log_data_movie_deleted), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.toast_data_movie_deleted), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(context, context.getString(R.string.log_data_movie_delete_failed), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.toast_data_movie_delete_failed), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         boolean result = moviesDbHelper.insertMovie(mMovie.getId(), mMovie.getTitle(), mMovie.getRatings(), mMovie.getPosterURL(), mMovie.getPlot(), mMovie.getReleaseDate());
                         if (result) {
-                            Toast.makeText(context, context.getString(R.string.log_data_movie_added), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.toast_data_movie_added), Toast.LENGTH_SHORT).show();
                             headerHolder.favouriteButton.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_filled_golden_24dp));
                         } else {
-                            Toast.makeText(context, context.getString(R.string.log_data_movie_add_failed), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.toast_data_movie_add_failed), Toast.LENGTH_SHORT).show();
                         }
                     }
                     ;

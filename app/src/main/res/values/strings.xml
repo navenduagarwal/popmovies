@@ -38,9 +38,9 @@
     <string name="positive_button">Close</string>
 
     <!-- DB Log values -->
-    <string name="log_data_movie_added">Movie marked as a favorite</string>
-    <string name="log_data_movie_add_failed">Movie mark as a favorite failed, Try Again!</string>
-    <string name="log_data_movie_deleted">Movie removed from a favorite List</string>
-    <string name="log_data_movie_delete_failed">Movie could not be removed from a favorite list, Try Again!</string>
-
+    <string name="toast_data_movie_added">Movie marked as a favorite</string>
+    <string name="toast_data_movie_add_failed">Movie mark as a favorite failed, Try Again!</string>
+    <string name="toast_data_movie_deleted">Movie removed from a favorite List</string>
+    <string name="toast_data_movie_delete_failed">Movie could not be removed from a favorite list, Try Again!</string>
+    <string name="toast_no_favourite_data">No movie marked as favourite yet, try different sort order</string>
 </resources>

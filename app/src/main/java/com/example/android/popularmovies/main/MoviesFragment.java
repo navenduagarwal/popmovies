@@ -13,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.asynctasks.FetchMovieTasks;
+import com.example.android.popularmovies.data.MoviesDbHelper;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.utils.Constants;
 
@@ -59,16 +61,30 @@ public class MoviesFragment extends Fragment {
     public void updateMovies() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortBy = prefs.getString(getString(R.string.pref_sort_key), getString(R.string.pref_sort_default));
+        if (sortBy.equals(getResources().getString(R.string.pref_sort_favorites))) {
 
-        FetchMovieTasks movieTasks = new FetchMovieTasks();
-        movieTasks.setUpdateListener(new FetchMovieTasks.OnUpdateListener() {
-            @Override
-            public void OnUpdate(ArrayList<Movie> result) {
+            final MoviesDbHelper moviesDbHelper = new MoviesDbHelper(getContext());
+            ArrayList<Movie> result = moviesDbHelper.getAllMoviesData();
+            if (result != null) {
                 updateViewWithResults(result);
+            } else {
+                mProgressBar.setVisibility(View.GONE);
+                mGridView.setVisibility(View.GONE);
+                Toast.makeText(getContext(), getResources().getString(R.string.toast_no_favourite_data), Toast.LENGTH_LONG).show();
             }
-        });
 
-        movieTasks.execute(sortBy);
+        } else {
+
+            FetchMovieTasks movieTasks = new FetchMovieTasks();
+            movieTasks.setUpdateListener(new FetchMovieTasks.OnUpdateListener() {
+                @Override
+                public void OnUpdate(ArrayList<Movie> result) {
+                    updateViewWithResults(result);
+                }
+            });
+
+            movieTasks.execute(sortBy);
+        }
     }
 
 

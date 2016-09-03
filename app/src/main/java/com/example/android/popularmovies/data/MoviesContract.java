@@ -25,7 +25,6 @@ public class MoviesContract {
         public static final String TABLE_NAME = "reviews";
 
         public static final String COLUMN_ID = "id";
-        public static final String COLUMN_MOVIE_ID = "movie_id";
         public static final String COLUMN_AUTHOR = "author";
         public static final String COLUMN_CONTENT = "content";
     }

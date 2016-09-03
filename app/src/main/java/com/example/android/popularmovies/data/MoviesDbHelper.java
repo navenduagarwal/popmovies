@@ -44,7 +44,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 ReviewEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 ReviewEntry.COLUMN_ID + " TEXT NOT NULL, " +
-                ReviewEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
                 ReviewEntry.COLUMN_AUTHOR + " TEXT NOT NULL, " +
                 ReviewEntry.COLUMN_CONTENT + " TEXT NOT NULL" + ");";
 
@@ -89,14 +88,13 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public boolean insertReview(String id, String movieId, String author, String content) {
+    public boolean insertReview(String id, String author, String content) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues newReviewValues = new ContentValues();
         Long reviewRowId;
         boolean result;
 
         newReviewValues.put(ReviewEntry.COLUMN_ID, id);
-        newReviewValues.put(ReviewEntry.COLUMN_MOVIE_ID, movieId);
         newReviewValues.put(ReviewEntry.COLUMN_AUTHOR, author);
         newReviewValues.put(ReviewEntry.COLUMN_CONTENT, content);
         reviewRowId = db.insert(ReviewEntry.TABLE_NAME, null, newReviewValues);
@@ -137,12 +135,12 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     }
 
     //Get Review Data from table
-    public Review getReviewData(String movieId) {
+    public Review getReviewData(String reviewId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor result = db.query(
                 ReviewEntry.TABLE_NAME,
                 null, // all the columns
-                ReviewEntry.COLUMN_MOVIE_ID + " = " + movieId,
+                ReviewEntry.COLUMN_ID + " = " + reviewId,
                 null, //values for where clause
                 null, //column to group by
                 null, //column to filter by row groups
@@ -187,10 +185,10 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     }
 
     //Delete review entries for movie
-    public boolean deleteSingleReviewRecord(String movieId) {
+    public boolean deleteSingleReviewRecord(String reviewId) {
         SQLiteDatabase db = this.getWritableDatabase();
         int result;
-        result = db.delete(ReviewEntry.TABLE_NAME, ReviewEntry.COLUMN_MOVIE_ID + "= ?", new String[]{movieId});
+        result = db.delete(ReviewEntry.TABLE_NAME, ReviewEntry.COLUMN_ID + "= ?", new String[]{reviewId});
         db.close();
         return (result > 0);
     }

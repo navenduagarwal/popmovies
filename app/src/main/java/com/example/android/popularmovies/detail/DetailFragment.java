@@ -85,18 +85,23 @@ public class DetailFragment extends Fragment {
     }
 
     public void updateTrailers() {
-        FetchTrailersTask trailersTask = new FetchTrailersTask();
-        trailersTask.setUpdateListener(new FetchTrailersTask.OnUpdateListener() {
-            @Override
-            public void OnUpdate(ArrayList<Trailer> trailers) {
-                mTrailerAdapter = new TrailerAdapter(getContext(), trailers, movieDetail, mReviews);
-                mRecycleViewTrailer.setAdapter(mTrailerAdapter);
-                mRecycleViewTrailer.invalidate();
-                mRecycleViewTrailer.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-        trailersTask.execute(movieDetail.getId());
+        if (movieDetail != null) {
+            FetchTrailersTask trailersTask = new FetchTrailersTask();
+            trailersTask.setUpdateListener(new FetchTrailersTask.OnUpdateListener() {
+                @Override
+                public void OnUpdate(ArrayList<Trailer> trailers) {
+                    mTrailerAdapter = new TrailerAdapter(getContext(), trailers, movieDetail, mReviews);
+                    mRecycleViewTrailer.setAdapter(mTrailerAdapter);
+                    mRecycleViewTrailer.invalidate();
+                    mRecycleViewTrailer.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+            trailersTask.execute(movieDetail.getId());
+        } else {
+            mRecycleViewTrailer.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 }

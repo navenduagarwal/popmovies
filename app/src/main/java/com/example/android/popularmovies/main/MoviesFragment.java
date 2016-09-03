@@ -174,4 +174,5 @@ public class MoviesFragment extends Fragment {
          */
         void onItemSelected(Movie movie);
     }
+
 }

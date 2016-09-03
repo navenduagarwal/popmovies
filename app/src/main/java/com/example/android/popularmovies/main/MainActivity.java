@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,7 @@ import com.example.android.popularmovies.utils.Constants;
 /**
  * Main activity
  */
-public class MainActivity extends AppCompatActivity implements MoviesFragment.Callback{
+public class MainActivity extends AppCompatActivity implements MoviesFragment.Callback {
 
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -34,9 +33,9 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if(findViewById(R.id.movies_detail_container) != null){
+        if (findViewById(R.id.movies_detail_container) != null) {
             mTwoPane = true;
-            if (savedInstanceState == null){
+            if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movies_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
                         .commit();
@@ -46,8 +45,8 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
             getSupportActionBar().setElevation(0f);
         }
 
-       MoviesFragment moviesFragment = ((MoviesFragment) getSupportFragmentManager()
-               .findFragmentById(R.id.fragment_movies));
+        MoviesFragment moviesFragment = ((MoviesFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_movies));
     }
 
     @Override
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
             // In two pane mode, show the detail view in this activity  by
             // adding or replacing the detail fragment using
             // fragment transaction.
-            Log.d("Hello", "Two Pane");
 
             Bundle args = new Bundle();
             args.putParcelable(Constants.KEY_MOVIE_1, movie);
@@ -91,9 +89,8 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
                     .replace(R.id.movies_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
         } else {
-            Log.d("Hello", "Single Pane");
             Intent intent = new Intent(this, DetailActivity.class);
-                    intent.putExtra(Constants.KEY_MOVIE,movie);
+            intent.putExtra(Constants.KEY_MOVIE, movie);
             startActivity(intent);
         }
     }
@@ -103,4 +100,5 @@ public class MainActivity extends AppCompatActivity implements MoviesFragment.Ca
         DialogFragment dialogFragment = new ReviewsDialogFragment();
         dialogFragment.show(MainActivity.this.getFragmentManager(), "ReviewsDialogFragment");
     }
+
 }
